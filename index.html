@@ -4,22 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MTY - Motores</title>
-    <!-- Fuente Inter (Alternativa premium a SF Pro de Apple) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Iconos Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="app-container">
-        <!-- Badge de Operador -->
         <div id="userPill" class="user-pill">
             <i data-lucide="user" width="14" height="14"></i>
             <span id="txtOperador">Op: ---</span>
         </div>
 
-        <!-- PANTALLA 1: LOGIN (SOLO GAFETE) -->
         <div id="screenLogin" class="screen active">
             <div class="apple-header">
                 <i data-lucide="unlocked" width="28" height="28"></i>
@@ -35,15 +31,13 @@
             </div>
         </div>
 
-        <!-- PANTALLA 2: FORMULARIO DE CAPTURA PRINCIPAL -->
         <div id="screenCapture" class="screen">
             <div class="apple-header">
                 <i data-lucide="barcode" width="28" height="28"></i>
                 <h2>Registro de Orden</h2>
-                <p class="subtitle">Ingrese la orden y configure los motores</p>
+                <p class="subtitle">Ingrese la orden y configure el motor</p>
             </div>
 
-            <!-- Input Orden -->
             <div class="input-group">
                 <label for="inputOrden">Código de Barras de la Orden</label>
                 <div class="input-wrapper">
@@ -52,82 +46,18 @@
                 </div>
             </div>
 
-            <!-- Carrusel de Motor Original -->
             <div class="picker-container">
-                <span class="picker-title">Configuración Motor Original</span>
-                <div class="dual-picker-layout">
-                    
-                    <!-- Columna Modelo -->
-                    <div class="picker-column">
-                        <span class="picker-column-label">Modelo</span>
-                        <div class="wheel-overlay">
-                            <div class="wheel-selection-indicator"></div>
-                            <div class="ios-wheel" id="wheelOrigModelo">
-                                <div class="wheel-space-holder"></div>
-                                <!-- Inyectado dinámicamente -->
-                                <div class="wheel-space-holder"></div>
-                            </div>
-                        </div>
+                <span class="picker-title">Conbinación de motores real</span>
+                <div id="motorGrid" class="motor-grid">
                     </div>
-
-                    <!-- Columna Cantidad -->
-                    <div class="picker-column">
-                        <span class="picker-column-label">Cantidad</span>
-                        <div class="wheel-overlay">
-                            <div class="wheel-selection-indicator"></div>
-                            <div class="ios-wheel" id="wheelOrigCant">
-                                <div class="wheel-space-holder"></div>
-                                <!-- Inyectado dinámicamente -->
-                                <div class="wheel-space-holder"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
             </div>
 
-            <!-- Carrusel de Motor Real -->
-            <div class="picker-container">
-                <span class="picker-title">Configuración Motor Real en Piso</span>
-                <div class="dual-picker-layout">
-                    
-                    <!-- Columna Modelo -->
-                    <div class="picker-column">
-                        <span class="picker-column-label">Modelo</span>
-                        <div class="wheel-overlay">
-                            <div class="wheel-selection-indicator"></div>
-                            <div class="ios-wheel" id="wheelRealModelo">
-                                <div class="wheel-space-holder"></div>
-                                <!-- Inyectado dinámicamente -->
-                                <div class="wheel-space-holder"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Columna Cantidad -->
-                    <div class="picker-column">
-                        <span class="picker-column-label">Cantidad</span>
-                        <div class="wheel-overlay">
-                            <div class="wheel-selection-indicator"></div>
-                            <div class="ios-wheel" id="wheelRealCant">
-                                <div class="wheel-space-holder"></div>
-                                <!-- Inyectado dinámicamente -->
-                                <div class="wheel-space-holder"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Botón Enviar -->
             <button class="btn-apple-primary" id="btnGuardar">
                 Guardar Registro
             </button>
             <div id="loaderGuardar" class="apple-spinner" style="margin-top:15px;"></div>
         </div>
 
-        <!-- PANTALLA 3: MODULO DE EXPORTACIÓN (ADMIN) -->
         <div id="screenExport" class="screen">
             <div class="apple-header">
                 <i data-lucide="download" width="28" height="28"></i>
@@ -170,11 +100,10 @@
 
     </div>
 
-    <!-- Acceso al Panel de Administración -->
     <button id="btnIrExport" class="btn-apple-secondary" style="margin-top: 28px; color: var(--apple-muted);">
         <i data-lucide="settings" width="16" height="16"></i> Panel de Descargas Administrativas
     </button>
 
-    <script src="js/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
