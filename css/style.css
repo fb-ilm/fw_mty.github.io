@@ -125,7 +125,7 @@ h2 {
     box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
 }
 
-/* --- CONTROL ESTILO RUEDA/CARRUSEL (iOS PICKER) --- */
+/* Contenedores Genéricos de Selección */
 .picker-container {
     background: #FAFAFC;
     border: 1px solid var(--apple-border);
@@ -140,118 +140,65 @@ h2 {
     color: var(--apple-muted);
     text-transform: uppercase;
     letter-spacing: 0.03em;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     display: block;
 }
 
-.dual-picker-layout {
+/* --- CUADRÍCULA DE BOTONES DE MOTOR --- */
+.motor-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    position: relative;
+    grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+    gap: 10px;
 }
 
-/* Línea divisoria central sutil */
-.dual-picker-layout::after {
-    content: '';
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    width: 1px;
-    height: 80%;
-    background-color: var(--apple-border);
-    opacity: 0.5;
-}
-
-.picker-column {
+.motor-btn {
+    background-color: var(--apple-card);
+    border: 2px solid var(--apple-border);
+    border-radius: 10px;
+    padding: 12px 6px;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.picker-column-label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--apple-muted);
-    margin-bottom: 6px;
-}
-
-/* Ventana del scroll */
-.ios-wheel {
-    position: relative;
-    height: 120px;
-    width: 100%;
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-    scrollbar-width: none; /* Ocultar barra en Firefox */
-}
-
-.ios-wheel::-webkit-scrollbar {
-    display: none; /* Ocultar barra en Chrome/Safari */
-}
-
-/* Capas de degradado para simular efecto 3D de esfera */
-.wheel-overlay {
-    position: relative;
-    width: 100%;
-}
-
-.wheel-overlay::before, .wheel-overlay::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 40px;
-    z-index: 2;
-    pointer-events: none;
-}
-.wheel-overlay::before {
-    top: 0;
-    background: linear-gradient(to bottom, rgba(250,250,252,1) 0%, rgba(250,250,252,0) 100%);
-}
-.wheel-overlay::after {
-    bottom: 0;
-    background: linear-gradient(to top, rgba(250,250,252,1) 0%, rgba(250,250,252,0) 100%);
-}
-
-/* Guías visuales de selección (Las dos líneas horizontales del centro) */
-.wheel-selection-indicator {
-    position: absolute;
-    top: 40px;
-    left: 0;
-    width: 100%;
-    height: 40px;
-    border-top: 1px solid rgba(0,0,0,0.06);
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-    background-color: rgba(0,0,0,0.015);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.wheel-space-holder {
-    height: 40px; /* Relleno superior e inferior para permitir scroll completo */
-}
-
-.wheel-item {
-    height: 40px;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--apple-muted);
-    scroll-snap-align: center;
-    transition: color 0.2s ease, font-weight 0.2s ease;
-    cursor: pointer;
+    transition: var(--transition);
 }
 
-.wheel-item.selected {
-    color: var(--apple-text);
+.motor-btn span {
+    font-size: 12px;
     font-weight: 600;
-    font-size: 17px;
+    color: var(--apple-text);
+    margin-bottom: 6px;
+    text-align: center;
 }
 
-/* Botón de acción principal (Estilo Apple Solid) */
+.motor-btn.selected {
+    border-color: var(--apple-blue);
+    background-color: rgba(0, 113, 227, 0.05);
+    box-shadow: 0 2px 8px rgba(0, 113, 227, 0.15);
+}
+
+.motor-btn.selected span {
+    color: var(--apple-blue);
+}
+
+/* Barra visual de colores */
+.color-bar {
+    width: 100%;
+    max-width: 40px;
+    height: 8px;
+    border-radius: 4px;
+    display: flex;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.color-segment {
+    flex: 1;
+    height: 100%;
+}
+
+/* Botones */
 .btn-apple-primary {
     background-color: var(--apple-blue);
     color: #FFFFFF;
@@ -273,7 +220,6 @@ h2 {
     background-color: var(--apple-blue-hover);
 }
 
-/* Botón Secundario / Enlaces */
 .btn-apple-secondary {
     background: none;
     border: none;
@@ -293,7 +239,6 @@ h2 {
     opacity: 0.8;
 }
 
-/* Badge de Usuario Activo en Esquina */
 .user-pill {
     position: absolute;
     top: 20px;
@@ -310,14 +255,12 @@ h2 {
     gap: 6px;
 }
 
-/* Layout de Fechas en Exportación */
 .date-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
 }
 
-/* Animación de Carga */
 .apple-spinner {
     display: none;
     border: 2px solid rgba(0,0,0,0.05);
@@ -334,9 +277,9 @@ h2 {
     100% { transform: rotate(360deg); }
 }
 
-/* Ajustes Responsivos */
 @media (max-width: 480px) {
     body { padding: 10px; }
     .app-container { padding: 30px 20px; border-radius: 16px; }
     h2 { font-size: 22px; }
+    .motor-grid { grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); }
 }
