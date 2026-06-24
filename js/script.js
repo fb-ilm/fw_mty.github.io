@@ -3,22 +3,66 @@
 // ==========================================
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw5nZ-J7AS0zdsUthkxdJMUvKPBminUj4t5UYUKlKKVwNCI4VWa18iKC5BwV_RNoTW_/exec";
 
-// Parámetros e Inyección de datos
-const listaMotores = ["1030260", "1010230", "1010231", "1010232", "1010233", "1010234"];
-const listaCantidades = Array.from({length: 50}, (_, i) => i + 1); // Rango 1 a 50
+// Configuraciones del Nuevo Sistema de Motores
+// Colores base: Negro (#1D1D1F), Gris (#86868B), Natural/Ivory (#D2B48C / #FFFFF0), Rojo (#FF3B30)
+const configMotores = [
+    { etiqueta: "B", pcn: "1010230", colores: ["#1D1D1F"] },
+    { etiqueta: "BB", pcn: "1010230 / 1010230", colores: ["#1D1D1F", "#1D1D1F"] },
+    { etiqueta: "BG", pcn: "1010230 / 1010231", colores: ["#1D1D1F", "#86868B"] },
+    { etiqueta: "BI", pcn: "1010230", colores: ["#1D1D1F", "#FFFFF0"] },
+    { etiqueta: "BN", pcn: "1010230 / 1010233", colores: ["#1D1D1F", "#D2B48C"] },
+    { etiqueta: "BR", pcn: "1010230 / 1010232", colores: ["#1D1D1F", "#FF3B30"] },
+    { etiqueta: "G", pcn: "1010231", colores: ["#86868B"] },
+    { etiqueta: "N", pcn: "1010233", colores: ["#D2B48C"] },
+    { etiqueta: "NG", pcn: "1010233 / 1010231", colores: ["#D2B48C", "#86868B"] },
+    { etiqueta: "RB", pcn: "1010232 / 1010230", colores: ["#FF3B30", "#1D1D1F"] },
+    { etiqueta: "R", pcn: "1010232", colores: ["#FF3B30"] },
+    { etiqueta: "RR", pcn: "1010232 / 1010232", colores: ["#FF3B30", "#FF3B30"] }
+];
 
 let usuarioLogueado = "";
+let motorSeleccionado = null; // Almacenará el PCN del motor elegido
 
 // Inicialización General
 lucide.createIcons();
-buildWheels();
+renderMotorGrid();
 
-// Construir Ruedas tipo iOS con Scroll-Snap
-function buildWheels() {
-    setupWheelData('wheelOrigModelo', listaMotores);
-    setupWheelData('wheelRealModelo', listaMotores);
-    setupWheelData('wheelOrigCant', listaCantidades);
-    setupWheelData('wheelRealCant', listaCantidades);
+// Renderizar Cuadrícula de Botones de Motores
+function renderMotorGrid() {
+    const grid = document.getElementById('motorGrid');
+    
+    configMotores.forEach((motor, index) => {
+        const btn = document.createElement('div');
+        btn.className = 'motor-btn';
+        if (index === 0) {
+            btn.classList.add('selected');
+            motorSeleccionado = motor.pcn; // Valor por defecto
+        }
+
+        // Crear la barra de color visual
+        let colorHtml = '';
+        motor.colores.forEach(color => {
+            colorHtml += `<div class="color-segment" style="background-color: ${color}"></div>`;
+        });
+
+        btn.innerHTML = `
+            <span>${motor.etiqueta}</span>
+            <div class="color-bar">
+                ${colorHtml}
+            </div>
+        `;
+
+        // Evento de Selección
+        btn.addEventListener('click', () => {
+            // Remover selección previa
+            document.querySelectorAll('.motor-btn').forEach(b => b.classList.remove('selected'));
+            // Aplicar nueva selección
+            btn.classList.add('selected');
+            motorSeleccionado = motor.pcn; // Guardar el PCN para la DB
+        });
+
+        grid.appendChild(btn);
+    });
 }
 
 const btnRegresar = document.getElementById('btn-back');
@@ -31,51 +75,6 @@ if (usuarioLogueado === '') {
     btnRegresar.addEventListener('click', ()=> {
         switchScreen('screenCapture');
     });
-}
-
-function setupWheelData(elementId, dataset) {
-    const wheel = document.getElementById(elementId);
-    const spaceHolders = wheel.querySelectorAll('.wheel-space-holder');
-    
-    dataset.forEach((val, index) => {
-        const item = document.createElement('div');
-        item.className = 'wheel-item';
-        if(index === 0) item.classList.add('selected'); // Primero por defecto
-        item.innerText = val;
-        item.setAttribute('data-value', val);
-        
-        // Centrar con click si el usuario prefiere tocar directo en vez de arrastrar
-        item.onclick = () => {
-            wheel.scrollTo({ top: index * 40, behavior: 'smooth' });
-        };
-
-        wheel.insertBefore(item, spaceHolders[1]);
-    });
-
-    // Escuchar el evento de scroll para aplicar estilos dinámicos de selección (Foco central)
-    wheel.addEventListener('scroll', () => {
-        clearTimeout(wheel.scrollTimeout);
-        wheel.scrollTimeout = setTimeout(() => {
-            const scrollPos = wheel.scrollTop;
-            const selectedIndex = Math.round(scrollPos / 40);
-            
-            const items = wheel.querySelectorAll('.wheel-item');
-            items.forEach((item, idx) => {
-                if(idx === selectedIndex) {
-                    item.classList.add('selected');
-                } else {
-                    item.classList.remove('selected');
-                }
-            });
-        }, 40);
-    });
-}
-
-// Recuperar valores vigentes en el centro del carrusel
-function getWheelValue(elementId) {
-    const wheel = document.getElementById(elementId);
-    const selectedItem = wheel.querySelector('.wheel-item.selected');
-    return selectedItem ? selectedItem.getAttribute('data-value') : null;
 }
 
 // Navegación entre interfaces
@@ -91,32 +90,20 @@ function switchScreen(screenId) {
     }
 }
 
-// --- MANEJO DE FLUJOS (LISTENERS) ---
-
 // Simulación de paso automático por escaneo de Gafete
-// --- MANEJO DE FLUJOS (CORRECCIÓN: LOGIN INSTANTÁNEO POR ESCANEO) ---
-
-// Cambia de pantalla automáticamente en cuanto el lector de barras ingresa el texto
-// Cambia de pantalla automáticamente en cuanto el lector de barras ingresa el texto
 document.getElementById('inputGafete').addEventListener('input', function() {
     const badgeCode = this.value.trim();
     
     if (badgeCode.length > 0) {
-        // Pequeño delay de 100ms para asegurar que el lector terminó de escribir todo el número completo
         setTimeout(() => {
-            // CORRECCIÓN: Primero extraemos y guardamos el valor real del input
             usuarioLogueado = this.value.trim(); 
-            
-            // Después actualizamos la interfaz y limpiamos la caja de texto
             document.getElementById('txtOperador').innerText = `Op: ${usuarioLogueado}`;
             document.getElementById('userPill').style.display = 'flex';
-            
-            switchScreen('screenCapture'); // Redirección automática e inmediata
+            switchScreen('screenCapture'); 
         }, 1000);
     }
 });
 
-// Previene cualquier conflicto o recarga si el lector tiene un 'Enter' automático al final
 document.getElementById('inputGafete').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
         e.preventDefault();
@@ -132,13 +119,14 @@ document.getElementById('btnGuardar').addEventListener('click', async function()
         return;
     }
 
+    // Se envían N/A en las variables Originales y Cantidad Real para mantener columnas en Google Sheets
     const payload = {
         usuario: usuarioLogueado,
         orden: ordenVal,
-        motorOriginal: getWheelValue('wheelOrigModelo'),
-        cantOriginal: getWheelValue('wheelOrigCant'),
-        motorReal: getWheelValue('wheelRealModelo'),
-        cantReal: getWheelValue('wheelRealCant')
+        motorOriginal: "N/A", 
+        cantOriginal: "N/A",
+        motorReal: motorSeleccionado, // Se envía el PCN internamente
+        cantReal: "N/A"
     };
 
     document.getElementById('btnGuardar').style.display = 'none';
@@ -156,10 +144,16 @@ document.getElementById('btnGuardar').addEventListener('click', async function()
         
         // Limpieza del formulario
         document.getElementById('inputOrden').value = "";
-        document.getElementById('wheelOrigModelo').scrollTo({top: 0});
-        document.getElementById('wheelRealModelo').scrollTo({top: 0});
-        document.getElementById('wheelOrigCant').scrollTo({top: 0});
-        document.getElementById('wheelRealCant').scrollTo({top: 0});
+        
+        // Resetear selección de botones a la primera opción
+        document.querySelectorAll('.motor-btn').forEach((b, i) => {
+            if(i === 0) {
+                b.classList.add('selected');
+                motorSeleccionado = configMotores[0].pcn;
+            } else {
+                b.classList.remove('selected');
+            }
+        });
         
         switchScreen('screenCapture');
 
@@ -197,12 +191,30 @@ document.getElementById('btnDescargar').addEventListener('click', async function
         if(queryResult.status === 'error') {
             alert("Autenticación fallida: " + queryResult.message);
         } else {
-            let csvData = "\uFEFF"; // BOM para compatibilidad con caracteres especiales en Microsoft Excel
+            let csvData = "\uFEFF"; 
             csvData += queryResult.headers.join(",") + "\n";
-            
+
             queryResult.data.forEach(row => {
-                if(row[0]) row[0] = new Date(row[0]).toLocaleString(); // Formatear marca de tiempo
-                csvData += row.join(",") + "\n";
+                // Procesamos cada celda de la fila
+                const formattedRow = row.map((cell, index) => {
+                    let val = cell;
+                    
+                    // Si es la columna 0 (la marca de tiempo), formateamos sin espacios complicados
+                    if (index === 0 && val) {
+                        const date = new Date(val);
+                        // Formato: DD/MM/AAAA_HH:MM (sin espacios para evitar cortes)
+                        val = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}_${date.getHours()}:${date.getMinutes()}`;
+                    }
+
+                    if (index === 2) { // <--- AJUSTA EL ÍNDICE SI LA ORDEN ESTÁ EN OTRA POSICIÓN
+                        return `="${val}"`; 
+                    }
+                    
+                    // Envolvemos todo en comillas dobles para que Excel no parta el texto
+                    return `"${val}"`;
+                });
+                
+                csvData += formattedRow.join(",") + "\n";
             });
 
             const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
