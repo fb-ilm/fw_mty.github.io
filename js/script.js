@@ -140,7 +140,7 @@ document.getElementById('btnGuardar').addEventListener('click', async function()
             body: JSON.stringify(payload)
         });
 
-        alert("Información sincronizada correctamente en Google Sheets.");
+        alert("Información sincronizada correctamente.");
         
         // Limpieza del formulario
         document.getElementById('inputOrden').value = "";
