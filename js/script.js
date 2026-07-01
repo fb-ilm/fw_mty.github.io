@@ -6,17 +6,17 @@ const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw5nZ-J7AS0zdsUthkx
 // Configuraciones del Nuevo Sistema de Motores
 // Colores base: Negro (#1D1D1F), Gris (#86868B), Natural/Ivory (#D2B48C / #FFFFF0), Rojo (#FF3B30)
 const configMotores = [
-    { etiqueta: "B", pcn: "1010230", colores: ["#1D1D1F"] },
+    { etiqueta: "B", pcn: "1030260 / 1010230", colores: ["#1D1D1F"] },
     { etiqueta: "BB", pcn: "1010230 / 1010230", colores: ["#1D1D1F", "#1D1D1F"] },
     { etiqueta: "BG", pcn: "1010230 / 1010231", colores: ["#1D1D1F", "#86868B"] },
-    { etiqueta: "BI", pcn: "1010230", colores: ["#1D1D1F", "#FFFFF0"] },
+    { etiqueta: "BI", pcn: "1010230 / 1010234", colores: ["#1D1D1F", "#FFFFF0"] },
     { etiqueta: "BN", pcn: "1010230 / 1010233", colores: ["#1D1D1F", "#D2B48C"] },
     { etiqueta: "BR", pcn: "1010230 / 1010232", colores: ["#1D1D1F", "#FF3B30"] },
-    { etiqueta: "G", pcn: "1010231", colores: ["#86868B"] },
-    { etiqueta: "N", pcn: "1010233", colores: ["#D2B48C"] },
+    { etiqueta: "G", pcn: "1030260 / 1010231", colores: ["#86868B"] },
+    { etiqueta: "N", pcn: "1030260 / 1010233", colores: ["#D2B48C"] },
     { etiqueta: "NG", pcn: "1010233 / 1010231", colores: ["#D2B48C", "#86868B"] },
     { etiqueta: "RB", pcn: "1010232 / 1010230", colores: ["#FF3B30", "#1D1D1F"] },
-    { etiqueta: "R", pcn: "1010232", colores: ["#FF3B30"] },
+    { etiqueta: "R", pcn: "1030260 / 1010232", colores: ["#FF3B30"] },
     { etiqueta: "RR", pcn: "1010232 / 1010232", colores: ["#FF3B30", "#FF3B30"] }
 ];
 
